@@ -166,8 +166,9 @@ Promise.prototype.constructor
  * 方法：
  * all(iterable) 全部成功才触发成功，一个失败就触发失败
  * allSettled(iterable) 全部settled（不管成功还是失败）后触发
- * any(iterable) 任意一个成功就触发成功，全部失败才触发失败
- * race(iterable) 任意一个settled触发成功
+ * any(iterable) ES2021 任意一个成功就触发成功，全部失败才触发失败 
+ * race(iterable) 任意一个settled触发成功,根据返回的状态确定该状态是成功还是失败
+ * 备注：入参iterable，不一定是数组，但一定是有 Iterator 接口的数据！！！
  * reject(reason) 返回一个rejected态的Promise
  * resolve(value) 结果由value的决定的Promise
  * 
@@ -177,7 +178,7 @@ Promise.prototype.constructor
  * 
  * Promise.prototype 的方法
  * then(cb) fulfilled态的回调
- * catch(cb) rejected态的回调
+ * catch(cb) rejected态的回调, then的一个语法糖，等价于 .then(null, rejection)
  * finally(cb) settled之后都会调用的回调,它没有入参
  */
 
@@ -211,7 +212,7 @@ Promise.all([fulfilled('resolve'), rejected('reject')])
         console.log(err) // 返回错误的Promise的结果
     })
 
-// allSettled
+// allSettled 只关心是否结束，并不关心结果
 Promise.allSettled([fulfilled('resolve'), rejected('reject')])
     .then(res => {
         console.log(res) // 每个Promise返回的结构是 { status, value }
@@ -230,7 +231,7 @@ Promise.any([rejected('reject1'), rejected('reject2')])
         console.log(err) // tc39 stage4, 返回一个 AggregateError: All promises were rejected
     })
 
-// race
+// race 只关心第一名
 // 返回第一个settled的Promise的结果. 注意,该Promise的状态取决于返回的Promise的状态
 Promise.race([fulfilled('resolve'), rejected('reject')])
     .then(res => {
@@ -243,14 +244,14 @@ Promise.race([fulfilled('resolve'), rejected('reject', 300)])
 
 console.log('start')
 
-// resolve
+// resolve 立即resolve()的 Promise 对象，是在本轮“事件循环”（event loop）的结束时执行，而不是在下一轮“事件循环”的开始时
 Promise.resolve('immediate resolved')
     .then(res => {
         // 插队了啥，直接加入本次循环的微任务队列
         console.log('resolve: ', res) // 当前事件循环的末尾执行（微任务），等到同步任务执行完成
     })
 
-// reject
+// reject 立即reject()的 Promise 对象，是在本轮“事件循环”（event loop）的结束时执行，而不是在下一轮“事件循环”的开始时
 Promise.reject('immediate rejected')
     .catch(res => {
         // 插队了啥，直接加入本次循环的微任务队列
@@ -258,10 +259,116 @@ Promise.reject('immediate rejected')
     })
 
 setTimeout(() => {
-    console.log('主线程上的setTimeout') // 进入Event Queue，第一次event loop后，进入第二次的event loop（最先执行）
+    console.log('下一次事件循环的开始会执行这个setTimeout') // 进入Event Queue，第一次event loop后，进入第二次的event loop（最先执行）
 })
 
 console.log('end')
 
 Promise.length === 1
 Promise.name = 'Promise'
+
+// * 深入理解链式调用的逻辑
+
+fulfilled('第一个')
+    .then(res => {
+        console.log(res)
+        // 链式，值的传递，类似冒泡阶段，一层一层向外传递
+        return '第二个'
+    })
+    .then(res => {
+        console.log(res)
+        throw new Error('第三个')
+        return '第二个报错了'
+    })
+    .catch(err => {
+        console.log(err)
+        // 若catch捕获异常，上面上一个Promise是rejected态
+        // 当前的链返回的Promise取决于回调函数返回的值的结果，与catch或then没有任何关系
+        return err.message // 返回的是原始类型的值，所以链式返回的新的Promise是fulfilled态
+    })
+    .then(res => {
+        console.log(res)
+    })
+
+rejected('first error')
+    .then(err => {
+        console.log(err)
+    })
+    .catch(err => {
+        console.log(err)
+        throw new Error('second error')
+    })
+    .catch(err => {
+        // 最后加的catch异常捕获，同样有冒泡效果
+        console.log(err)
+    })
+
+// * Promise的链式回调，返回的是另一个Promise
+fulfilled('good job')
+    .then(res => {
+        console.log(res)
+        // 返回的Promise要等待这个Promise状态settled之后才会进入对应的回调
+        return rejected('bad guy')
+    })
+    .then(res => {
+        // return的Promise如果fulfilled，进入then
+        console.log(res)
+    })
+    .catch(err => {
+        // return的Promise，如果rejected，进入catch
+        console.log(err)
+    })
+
+// * 加深理解 状态一旦settled之后，就不会再改变
+let promises = new Promise(function (resolve, reject) {
+    resolve('ok'); // fulfilled态
+    throw new Error('test'); // 无效
+});
+
+// * Promise 会吃掉错误 （内部错误不会终止进程）
+promises = new Promise(resolve => {
+    return resolve(2 + x)
+})
+
+// Uncaught (in promise) ReferenceError: x is not defined
+promises.then(res => {
+    console.log(res)
+})
+
+setTimeout(() => {
+    console.log('看吧，Promise内部错误被吃掉了，我还是正常执行了')
+})
+
+// * then 和 catch，并没有顺序之分（要么then, 要么catch）
+Promise.resolve()
+    .catch(function (error) { // 跳过catch，执行then，始终都是2进1
+        console.log('oh no', error);
+    })
+    .then(function () {
+        console.log('carry on');
+    });
+
+// * catch只能捕获之前的链式节点，管不了它之后的链式Promise的回调
+
+// * ES2018 引入的 finally，本质上就是then的语法糖
+// 等同于
+promise
+    .then(
+        result => {
+            // 语句
+            return result;
+        },
+        error => {
+            // 语句
+            throw error;
+        }
+    );
+
+// 基础实现
+Promise.prototype.finally = function (callback) {
+    let P = this.constructor; // 构造函数Promise
+    return this.then(
+        value => P.resolve(callback()).then(() => value),
+        reason => P.resolve(callback()).then(() => { throw reason })
+    );
+};
