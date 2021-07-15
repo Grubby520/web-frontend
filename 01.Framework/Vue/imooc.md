@@ -63,12 +63,102 @@ key的重要性
 v-if 和 v-for 不要同时使用，可以先filter，可以在v-for里面或外面进行v-if（使用也不会报错）
 
 6. 事件
-event参数
-事件修饰符，按键修饰符
-【观察】事件被绑定到哪里
+event参数，模板里有一个固定的参数 $event 原生DOM对象
+点修饰符：事件修饰符 包括:
+    @click.stop 阻止单击事件继续传播
+    @submit.prevent 表单提交不再重载页面
+    @click.stop.prevent 串联使用
+    @click.capture 内部元素触发的事件先在此处理，再交给内部元素处理
+    @click.self 内部元素无法触发
+按键修饰符：
+    .ctrl
+    .enter
+
+【观察】事件被绑定到哪里？ event.target, event.currentTarget
+总结：
+    event 是原生的
+    事件是被挂载到当前元素
+
+7. 表单
+元素：input, select, checkbox, radio, textarea
+修饰符：
+    .trim
+    .lazy
+    .number
+
+8. Vue组件使用
+props 和 $emit
+组件间通讯：自定义事件，还有其他形式有哪些？
+组件生命周期：必须是最全的，以及每个钩子里能拿到什么（data，method...）
+
+示例：实现一个todoList
+    打印组件触发的各生命周期，且执行顺序是怎样的？
+    实现父子组件间通信 props + $emit
+    实现兄弟组件间通信 自定义事件，不用手动去实现 eventBus，
+        event = new Vue(), mounted时自定义事件 event.$on, beforeDestroy时取消事件 event.$off, 
+    自己去延伸其他通信方式，并写demo，全部实现一遍！！！
+
+理解生命周期：
+两个维度：
+    1.单个组件（初级）
+    2.包含子组件的父级组件（进阶）
+主线：
+挂载阶段 -》更新阶段 -》销毁阶段
+
+初始化是外到内，渲染是内到外；
+父组件created，子组件created；子组件mounted，父组件mounted；
+父组件beforeUpdate，子组件beforeUpdate；子组件updated，父组件updated；
+父组件beforeDestroy,子组件beforeDestroy；子组件destroyed，父组件destroyed；
+
+-----------------------------------
+Vue高级特性
+
+1.候选人对Vue掌握的全面度，深度；
+2.考察项目是否有深度和复杂度（用到了高级特性）；
+3.提前做技术储备，可以不用，但必须知道，需要使用时能想到方案；
 
 
+1.自定义v-model
+2.$nextTick
+3.slot
+4.动态组件
+4.1异步组件
+5.keep-alive
+6.mixin
+7.refs
 
+应用：
+1.在一个自定义的组件上使用v-model
+<CustomColor v-model="color" />
+{
+    model: { // 对应的就是外部v-model的属性
+        prop: 'propName',
+        event: 'changeName'
+    },
+    props: {
+        propName: String,
+        default: '#fff'
+    },
+    methods: {
+        updateModel() {
+            this.$emit('changeName', 'xxx')
+        }
+    }
+}
+
+2.$nextTick
+* Vue 是异步渲染（结合原理）
+* data改变之后，DOM不会立即渲染
+* $nextTick 会在DOM渲染之后才被触发，用于获取更新后的DOM节点
+利用todolist测试：
+1.利用ref拿到DOM节点，长度3，点击添加按钮，push一条数据，理论上4条，实际还是3条，因为data改变了，DOM并没有
+2.页面渲染是会对data的修改做整合，多次修改data只会渲染一次（优化手段，提升性能，一定是异步渲染），同步就不行，需对源码进行深读，里面包含了微任务队列；
+
+3.slot
+插槽并不难，只是内容比较多；
+具名插槽 根据约定的名称，外部编写子组件渲染的template和事件，内部定义对应名称的模板结构；
+作用域插槽 父级模板使用子组件时，在内部定义的 v-slot里拿到子组件的数据，并自定义页面模板内容；
+动态插槽
 
 
 
