@@ -3,7 +3,7 @@
     <p>{{ name }}</p>
     <input v-model="text">
     <button @click="plus">点我</button>
-    <Child :list="list" @del="del" />
+    <Child ref="child" :list="list" @del="del" />
   </div>
 </template>
 
@@ -56,6 +56,8 @@ export default {
         label: this.text,
         key: this.key
       });
+      console.log(this.$refs.child.$el.children.length)
+      
     },
     del(index) {
       this.list.splice(index, 1)
@@ -71,6 +73,7 @@ export default {
     console.log("parent beforeMount");
   },
   mounted() {
+    console.log(this)
     console.log("parent mounted");
   },
   beforeUpdate() {

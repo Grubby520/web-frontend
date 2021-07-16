@@ -1,12 +1,12 @@
 <template>
-  <div class="child">
-    {{ name }}
+  <!-- <div class="child">
+    {{ name }} -->
     <ul>
       <li v-for="(item, index) in list" :key="item.id">
         <Grandchild :label="item.label" />  <span @click="del(index)" style="margin-left: 10px; color: red;">X</span>
       </li>
     </ul>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
