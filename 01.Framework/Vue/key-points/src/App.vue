@@ -1,0 +1,55 @@
+<template>
+  <div id="app">
+    <el-button type="primary">Button</el-button>
+    <div class="flex">
+      <div id="nav">
+        <ul>
+          <li><router-link to="/">Home</router-link></li>
+          <li>
+            <router-link to="/lifecycle">Lifecycle</router-link>
+          </li>
+          <li>
+            <router-link to="/slot">Slot</router-link>
+          </li>
+        </ul>
+      </div>
+      <div id="container">
+        <router-view />
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss">
+@import url("./common.scss");
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#nav {
+  min-height: 100vh;
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
+}
+
+.flex {
+  display: flex;
+  #nav {
+    width: 250px;
+    padding-right: 10px;
+    border-right: 1px darkolivegreen dotted;
+  }
+  #container {
+    padding: 15px;
+    width: 100%;
+  }
+}
+</style>
