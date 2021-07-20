@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <el-button type="primary">Button</el-button>
     <div class="flex">
       <div id="nav">
         <ul>
@@ -10,6 +9,9 @@
           </li>
           <li>
             <router-link to="/slot">Slot</router-link>
+          </li>
+          <li>
+            <router-link to="/boundary">Boundary</router-link>
           </li>
         </ul>
       </div>
@@ -21,7 +23,7 @@
 </template>
 
 <style lang="scss">
-@import url("./common.scss");
+@import "./common.scss";
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

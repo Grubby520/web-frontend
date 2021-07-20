@@ -21,6 +21,11 @@ const routes = [
     name: "Slot",
     component: () => import("../views/Slot.vue"),
   },
+  {
+    path: "/boundary",
+    name: "Boundary",
+    component: () => import("../views/Boundary.vue"),
+  },
 ];
 
 const router = new VueRouter({

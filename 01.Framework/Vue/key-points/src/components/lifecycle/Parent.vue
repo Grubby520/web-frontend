@@ -2,8 +2,18 @@
   <div class="parent">
     <input v-model="text" />
     <button @click="plus">点我</button>
-    <Child ref="child" :list="list" @del="del" />
-
+    <!-- 通信 父传子
+      传递 动态 | 静态 prop
+      注意：传number和boolean，必须使用动态Prop，说明它是表达式，而不是值
+    -->
+    <Child
+      ref="child"
+      :list="list"
+      :baseValue="baseValue"
+      staticValue="static value"
+      @del="del"
+    />
+    <!-- 在 template 模板里，两种方式都可以：kebab-case & PascalCase -->
     <Alive />
   </div>
 </template>
@@ -35,6 +45,7 @@ import Child from "./Child.vue";
 import Alive from "./Alive.vue";
 export default {
   name: "Parent",
+  // 局部注册组件
   components: {
     Child,
     Alive,
@@ -50,6 +61,7 @@ export default {
       ],
       key: 0,
       text: "",
+      baseValue: "original data type",
     };
   },
   methods: {

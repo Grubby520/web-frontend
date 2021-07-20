@@ -1,5 +1,12 @@
+<!-- 
+  内置组件 keep-alive 缓存组件状态 
+-->
 <template>
   <div id="dynamic-component-demo">
+    <el-divider></el-divider>
+    <h3>dynamic component</h3>
+    <p class="mb-m">keep-alive + is attribute</p>
+
     <button
       v-for="tab in tabs"
       v-bind:key="tab"
@@ -9,7 +16,6 @@
       {{ tab }}
     </button>
 
-    <!-- 内置组件 keep-alive 缓存组件状态 -->
     <keep-alive>
       <!-- 搭配内置组件 component, 动态组件 -->
       <!-- 特殊的 attribute is -->

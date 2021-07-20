@@ -5,6 +5,7 @@
 <script>
 export default {
   name: "Grandchild",
+  inheritAttrs: false,
   props: {
     label: {
       required: true,
@@ -23,6 +24,8 @@ export default {
   },
   mounted() {
     console.log(`Grandchild ${this.label} mounted`);
+    // 通信方法 孙子组件接收到了祖父组件传递的 data property
+    this.$console(this.$attrs); // {staticValue: "static value"}
   },
   beforeUpdate() {
     console.log(`Grandchild ${this.label} beforeUpdate`);

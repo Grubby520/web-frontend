@@ -164,5 +164,10 @@ Vue高级特性
 
 
 
-
+通信：
+1. prop + emit
+2. $refs
+3. $attrs
+4. provide + inject
+5. 自定义事件 $on + $off
 
