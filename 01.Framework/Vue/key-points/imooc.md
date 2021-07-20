@@ -164,10 +164,12 @@ Vue高级特性
 
 
 
-通信：
+通信方式：
 1. prop + emit
-2. $refs
-3. $attrs
+2. $refs + ref
+3. $attrs + $listeners
 4. provide + inject
-5. 自定义事件 $on + $off
-
+5. 自定义事件 EventBus $on + $off
+6. vuex
+7. 浏览器存储 localStorage, sessionStorage
+8. $parent, $children

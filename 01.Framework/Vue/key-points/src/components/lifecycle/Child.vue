@@ -19,6 +19,7 @@
 import Grandchild from "./Grandchild.vue";
 export default {
   name: "Child",
+  // 手动指定 attribute 传递哪些给哪些元素。 class 和 style 不受任何影响；
   inheritAttrs: true,
   components: {
     Grandchild,
@@ -40,6 +41,9 @@ export default {
   },
   methods: {
     del(index) {
+      // this.$emit("on-del", index); // good
+      // this.$emit("onDel", index); // bad
+      // 自定义事件 派发事件对象 事件名：推荐始终使用 kebab-case
       this.$emit("del", index);
     },
     changeProp() {

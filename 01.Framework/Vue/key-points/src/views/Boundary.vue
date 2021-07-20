@@ -1,7 +1,13 @@
 <template>
-  <div>Boundary</div>
+  <Index />
 </template>
 
 <script>
-export default {};
+import Index from "../components/boundary";
+export default {
+  name: "Boundary",
+  components: {
+    Index,
+  },
+};
 </script>

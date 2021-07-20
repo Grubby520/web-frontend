@@ -64,6 +64,17 @@ export default {
       baseValue: "original data type",
     };
   },
+  /**
+   * 通信方式 provide + inject
+   * 1.Object 传递静态属性 没有this
+   * 2. () => Object 能拿到this 函数返回一个对象
+   * 注意：传递的是数组或对象类型，同样是响应式的
+   */
+  provide() {
+    return {
+      list: this.list,
+    };
+  },
   methods: {
     plus() {
       this.key++;
