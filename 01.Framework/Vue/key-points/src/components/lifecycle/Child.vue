@@ -51,7 +51,7 @@ export default {
         1.原始数据类型 不会改变父组件
         2.数组或对象类型的 prop，子组件的修改会影响到父组件的状态
       */
-      this.baseValue = "new value";
+      // this.baseValue = "new value";
     },
     /**
      * 通信方式

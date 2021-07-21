@@ -1,27 +1,26 @@
-import Vue from "vue"
+let cachedPermissions = {}
 
-let cachedPermissions = Vue.observable({})
-
-function mockApi(operationGroups) {
-  return new Promise((resolve, reject) => {
-    setTimeout((operationGroups) => {
-      resolve([
-        'oemSettleAccounts-operations.export',
-        'oemSettleAccounts-operations.confirm'
-      ])
+function mockApi() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: [
+          'oemSettleAccounts-operations.export',
+          'oemSettleAccounts-operations.confirm'
+        ]
+      })
     }, 300)
   })
 }
 
-const getPermissions = (groupName, context) => {
+const getPermissions = (groupName) => {
   return new Promise(resolve => {
     const permission = cachedPermissions[groupName]
     if (!permission) {
       mockApi(groupName)
         .then(({ data = [] }) => {
-          Vue.set(cachedPermissions, groupName, data)
-          context.$forceUpdate() // 需要测试，是否需要重新渲染
-          resolve(cachedPermissions[groupName])
+          cachedPermissions[groupName] = data
+          resolve(data)
         })
     } else {
       resolve(permission)
@@ -31,13 +30,19 @@ const getPermissions = (groupName, context) => {
 
 export default (group) => {
   return {
+    data() {
+      return {
+        permissions: []
+      }
+    },
+    mounted() {
+      getPermissions(group).then(data => {
+        this.permissions = data
+      })
+    },
     methods: {
       checkPermission(type) {
-        // 需要测试，这样应该不需要强制渲染
-        getPermissions(group, this).then(res => {
-          const operationCode = `${group}.${type}`
-          return res.includes(operationCode)
-        })
+        return this.permissions.includes(`${group}.${type}`)
       }
     }
   }

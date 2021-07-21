@@ -1,7 +1,12 @@
 <template>
   <div class="parent">
     <input v-model="text" />
-    <button @click="plus">点我</button>
+    <button @click="plus" style="margin-right: 10px;">点我</button>
+
+    <el-button v-if="checkPermission('export')" type="primary">export permission</el-button>
+    <el-button v-if="checkPermission('confirm')" type="primary">confirm permission</el-button>
+    <el-button v-if="checkPermission('create')" type="primary">not exist permission</el-button>
+
     <!-- 通信 父传子
       传递 动态 | 静态 prop
       注意：传number和boolean，必须使用动态Prop，说明它是表达式，而不是值
@@ -43,6 +48,7 @@
  */
 import Child from "./Child.vue";
 import Alive from "./Alive.vue";
+import Permission from "@src/mixins/permission";
 export default {
   name: "Parent",
   // 局部注册组件
@@ -50,6 +56,7 @@ export default {
     Child,
     Alive,
   },
+  mixins: [Permission('oemSettleAccounts-operations')],
   data() {
     return {
       name: "parent",
@@ -77,6 +84,7 @@ export default {
   },
   methods: {
     plus() {
+      console.log(this.checkPermission('export'));
       this.key++;
       this.list.push({
         label: this.text,
