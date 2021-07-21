@@ -1,11 +1,17 @@
 <template>
   <div class="parent">
     <input v-model="text" />
-    <button @click="plus" style="margin-right: 10px;">点我</button>
+    <button @click="plus" style="margin-right: 10px">点我</button>
 
-    <el-button v-if="checkPermission('export')" type="primary">export permission</el-button>
-    <el-button v-if="checkPermission('confirm')" type="primary">confirm permission</el-button>
-    <el-button v-if="checkPermission('create')" type="primary">not exist permission</el-button>
+    <el-button v-if="checkPermission('export')" type="primary"
+      >export permission</el-button
+    >
+    <el-button v-if="checkPermission('confirm')" type="primary"
+      >confirm permission</el-button
+    >
+    <el-button v-if="checkPermission('create')" type="primary"
+      >not exist permission</el-button
+    >
 
     <!-- 通信 父传子
       传递 动态 | 静态 prop
@@ -51,12 +57,18 @@ import Alive from "./Alive.vue";
 import Permission from "@src/mixins/permission";
 export default {
   name: "Parent",
-  // 局部注册组件
+  // 局部注册组件 (另外，全局注册的组件也会合并到每个组件配置对象所对应的components)
   components: {
     Child,
     Alive,
   },
-  mixins: [Permission('oemSettleAccounts-operations')],
+  /**
+   * mixins 混入
+   * souce code: mergeOptions 处理 extends 和 mixins：
+   * 1.递归把 mixins 合并到 parent上 ；
+   * 2.遍历 parent，调用 mergeField，再遍历 child，如果key 不在 parent 上存在，则调用 mergeField
+   */
+  mixins: [Permission("oemSettleAccounts-operations")],
   data() {
     return {
       name: "parent",
@@ -84,7 +96,6 @@ export default {
   },
   methods: {
     plus() {
-      console.log(this.checkPermission('export'));
       this.key++;
       this.list.push({
         label: this.text,
