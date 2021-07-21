@@ -21,6 +21,11 @@ export default {
   mounted() {
     // 3.另一个兄弟组件接收事件 mounted钩子函数里 $on监听自定义事件
     EventBus.$on("model-emitter", this.modelUpdate);
+    // better way, 结合 $once 实例方法，监听hook钩子，且只会触发一次
+    // source code: 调用 $on(event, on), on内部调用 $off, 并执行回调 fn.apply(vm, arguments)
+    this.$once("hook:beforeDestroy", () => {
+      EventBus.$off();
+    });
   },
   methods: {
     btnClick() {
@@ -32,8 +37,8 @@ export default {
     },
   },
   beforeDestroy() {
-    // 4.vm.$off( [event, callback] ) 移除自定义事件监听器 
-    EventBus.$off(); // 不指定参数，移除所有的事件监听器（包括事件和所有回调）
+    // 4.vm.$off( [event, callback] ) 移除自定义事件监听器
+    // EventBus.$off(); // 不指定参数，移除所有的事件监听器（包括事件和所有回调）
     // EventBus.$off("model-emitter", this.modelUpdate);
   },
 };
