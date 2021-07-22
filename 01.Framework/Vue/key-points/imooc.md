@@ -169,7 +169,83 @@ Vue高级特性
 2. $refs + ref
 3. $attrs + $listeners
 4. provide + inject
-5. 自定义事件 EventBus $on + $off
-6. vuex
+5. EventBus 自定义事件 $emit + $on + $off + $once
+6. vuex vs 全局事件总线
 7. 浏览器存储 localStorage, sessionStorage
-8. $parent, $children
+8. $parent, $children // 深度耦合，不推荐
+
+合并策略：
+mergeOptions 方法
+场景覆盖：
+1.全局注册的components，directives，filters
+2.通过 extends, mixins 合并选项
+具体策略：
+1.
+
+风格指南：
+（1）组件：
+1.命名
+PascalCase vs kebab-case
+template模板：两者都可以，更加推荐 PascalCase；
+DOM模块：必须使用 kebab-case（html对大小写不敏感）；
+
+2.自闭合
+<MyComponent />
+
+3.单文件组件命名
+既然模板里采用 PascalCase，那么为了保持一致，单文件组件的文件名也采用 PascalCase；
+如果习惯写 kebab-case，那么文件名也保持 kebab-case；
+
+4.组件名的单词顺序
+重点：描述的单词开头，修饰词结尾；
+反例：auditDialog
+好例：DialogAudit, SearchBtnRun, SearchBtnClear
+
+5.组件名的单词要完整？
+完整 vs 简写
+强烈推荐：即使单词很长，也要完整单词拼写，不要简写；
+好例：PriceOrQuantityBatchUpdate (描述：批量更新单价或数量-组件)；
+
+6.Prop 命名
+定义命名：camelCase
+template使用：kebab-case
+好例：
+props: {
+  operationType: String
+}
+<Dialog :operation-type="operationType" />
+* 新技能：
+加上校验，特别是传递约定值的时候；
+props: {
+  type: String,
+  required: true,
+  validator(value) {
+    // 外部必须传递约定好的可选类型：新增 | 更新 | 只读
+    return ['create', 'update', 'read'].indexOf(value) >= 0
+  }
+}
+
+7.computed 的使用场景
+在模板中编写简单的表达式可以，再稍微复杂一点，或者依赖其他属性时，放在computed中更适合；
+它还有缓存，依赖不改变，就会直接反复上次结果,而且是响应式的，触发view更新；
+不像methods，每次都要计算；
+好例：
+<el-button :disabled="onChecked" />
+computed: {
+  onChecked() {
+    this.multipleSelection.length === 0
+  },
+  totalPrice() {
+    return this.unitPrice * (this.counts || 0)
+  }
+}
+
+8.指令缩写，统一使用缩写
+v-bind: -> :
+v-on  -> @
+v-slot -> #
+
+9.私有 property 命名
+场景：mixins 混入；私有属性和方法；
+目的：特别是 mixins，要避免冲突；
+写法：$_namespace_xxx
