@@ -18,6 +18,24 @@
     >
     <Render :showBar="showBar" />
     <Jsx class="mt-l" />
+
+    <el-divider></el-divider>
+    <h5>Filter</h5>
+    <el-input
+      v-model="integer"
+      v-slFormatNumber="{ type: 'integer' }"
+      placeholder="我只能输入正整数"
+      style="width: 250px"
+    ></el-input>
+    <p>{{ integer }}</p>
+
+    <el-input
+      v-model="decimals"
+      v-slFormatNumber="{ type: 'decimals' }"
+      placeholder="我只能输入小数"
+      style="width: 250px"
+    ></el-input>
+    <p>{{ decimals }}</p>
   </div>
 </template>
 
@@ -38,6 +56,8 @@ export default {
       checked: true,
       name: "lili",
       showBar: false,
+      integer: "",
+      decimals: "",
     };
   },
 };

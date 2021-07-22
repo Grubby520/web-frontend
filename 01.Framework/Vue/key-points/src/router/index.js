@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 
-Vue.use(VueRouter);
+Vue.use(VueRouter); // 插件 Plugin 一个库，提供强大的API
 
 const routes = [
   {

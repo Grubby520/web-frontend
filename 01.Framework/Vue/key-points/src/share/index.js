@@ -12,7 +12,7 @@ import Plugins from "./packages";
 const requireDirectives = require.context("./directives", true, /\w+\.(js)$/);
 requireDirectives.keys().forEach((name) => {
   const file = requireDirectives(name);
-  const config = file.config || file;
+  const config = file.default || file;
   Vue.use(config);
 });
 

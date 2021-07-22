@@ -4,8 +4,8 @@ formatNumber.install = (Vue) => {
    * // 根据需求不断扩展
    * value格式：v-="{ type: "integer", includeZero: true, minus: false }"
    *
-   * type: 格式化方式，integer（正整数）、gold（保留两位小数的金钱格式）
-   * includeZero：type为integer时（可选 包含0），type为gold时（表示是否自动补位）
+   * type: 格式化方式，integer（正整数）、decimals（小数）
+   * includeZero：type为integer时（可选 包含0），type为decimals时（表示是否自动补位）
    * minus: 是否允许输入负数 (integer)
    */
   Vue.directive("slFormatNumber", {
@@ -16,8 +16,8 @@ formatNumber.install = (Vue) => {
             case "integer":
               this.setInteger(param);
               break;
-            case "gold":
-              this.setGold(param);
+            case "decimals":
+              this.setDecimals(param);
               break;
             default:
               console.log("暂不支持此格式化方式");
@@ -38,7 +38,7 @@ formatNumber.install = (Vue) => {
               input$.dispatchEvent(new Event("compositionend"));
               input$.dispatchEvent(new Event("input"));
             }
-          }
+          };
           const onChange = () => {
             const valuePrev = input$.value;
             let valueNext = formatInteger(valuePrev, param);
@@ -52,17 +52,17 @@ formatNumber.install = (Vue) => {
               input$.dispatchEvent(new Event("compositionend"));
               input$.dispatchEvent(new Event("input"));
             }
-          }
+          };
           validate.addEvent(input$, ["input"], onInput);
           validate.addEvent(input$, ["change"], onChange);
         },
-        setGold: function (param) {
+        setDecimals: function (param) {
           const input$ = el.getElementsByTagName("input")[0];
           const onInput = () => {
             const valuePrev = input$.value;
             const valueNext = compare(
               param,
-              goldChange(input$.value, param.decimalPlaces || 2)
+              decimalsChange(input$.value, param.decimalPlaces || 2)
             );
             if (String(valueNext) !== valuePrev) {
               input$.value = valueNext;
@@ -74,7 +74,7 @@ formatNumber.install = (Vue) => {
             const valuePrev = input$.value;
             const valueNext = compare(
               param,
-              goldBlur(input$.value, param.includeZero)
+              decimalsBlur(input$.value, param.includeZero)
             );
             if (String(valueNext) !== valuePrev) {
               input$.value = valueNext;
@@ -109,7 +109,7 @@ function formatInteger(value, param) {
   value = value ? value : param.includeZero && value === 0 ? value : "";
   return value.toString();
 }
-function goldChange(v, decimalPlaces = 2) {
+function decimalsChange(v, decimalPlaces = 2) {
   v = v.indexOf(".") === 0 ? "0" + v : v;
   let newValue = v.toString();
   let decimalPlacesReg = "^(-)*(\\d+)\\.(";
@@ -136,7 +136,7 @@ function goldChange(v, decimalPlaces = 2) {
 
   return newValue;
 }
-function goldBlur(v, includeZero) {
+function decimalsBlur(v, includeZero) {
   let nv = v.replace(/\.$/, "");
   if (!includeZero) {
     return nv;
