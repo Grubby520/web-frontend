@@ -20,7 +20,7 @@
     <Jsx class="mt-l" />
 
     <el-divider></el-divider>
-    <h5>Filter</h5>
+    <h4>Directives</h4>
     <el-input
       v-model="integer"
       v-slFormatNumber="{ type: 'integer' }"
@@ -36,6 +36,11 @@
       style="width: 250px"
     ></el-input>
     <p>{{ decimals }}</p>
+
+    <el-divider></el-divider>
+    <h4>Filters</h4>
+    <p>{{ totalPrice | SlMoneyFormatter }}</p>
+    <p>{{ 432345 | SlMoneyFormatter }}</p>
   </div>
 </template>
 
@@ -58,6 +63,7 @@ export default {
       showBar: false,
       integer: "",
       decimals: "",
+      totalPrice: 1234567,
     };
   },
 };

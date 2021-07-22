@@ -31,3 +31,11 @@ requireComponents.keys().forEach((fileName) => {
 
 // 公共属性/方法
 Plugins.install(Vue);
+
+// 过滤器
+const requireFilters = require.context("./filters", true, /\w+\.(js)$/);
+requireFilters.keys().forEach((name) => {
+  const file = requireFilters(name);
+  const config = file.default || file;
+  Vue.use(config);
+});
