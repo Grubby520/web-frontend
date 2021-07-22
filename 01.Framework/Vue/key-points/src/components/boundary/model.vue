@@ -9,6 +9,10 @@
 </template>
 
 <script>
+/**
+ * 通信方式 EventBus
+ * 1.实现 Model 和 Sync 两个兄弟组件之间的通信
+ */
 import { EventBus } from "@share/event-bus";
 
 export default {
@@ -35,7 +39,7 @@ export default {
       // 3.model.event 指定的 eventName
       this.$emit("change", !this.checked);
       // 通信 2.兄弟组件 派发一个自定义的事件（Web APIs dispatchEvent 不是一回事）
-      this.handleEvent()
+      this.handleEvent();
     },
     handleEvent() {
       EventBus.$emit("model-emitter", this.checked);

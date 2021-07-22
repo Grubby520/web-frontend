@@ -11,24 +11,33 @@
     <!-- 父组件 prop带上sync修饰符 -->
     <Sync :name.sync="name" />
 
-    <!-- 通信方式 EventBus
-      1.实现 Model 和 Sync 两个兄弟组件之间的通信
-    -->
+    <el-divider></el-divider>
+    <h4>render & jsx</h4>
+    <el-button type="primary" @click="showBar = !showBar"
+      >change prop</el-button
+    >
+    <Render :showBar="showBar" />
+    <Jsx class="mt-l" />
   </div>
 </template>
 
 <script>
 import Model from "./model.vue";
 import Sync from "./sync.vue";
+import Render from "./Render.vue";
+import Jsx from "./Jsx.vue";
 export default {
   components: {
     Model,
     Sync,
+    Render,
+    Jsx,
   },
   data() {
     return {
       checked: true,
       name: "lili",
+      showBar: false,
     };
   },
 };
