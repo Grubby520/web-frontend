@@ -41,6 +41,10 @@
     <h4>Filters</h4>
     <p>{{ totalPrice | SlMoneyFormatter }}</p>
     <p>{{ 432345 | SlMoneyFormatter }}</p>
+
+    <el-divider></el-divider>
+    <h4>Vuex</h4>
+    <Vuex />
   </div>
 </template>
 
@@ -49,12 +53,14 @@ import Model from "./model.vue";
 import Sync from "./sync.vue";
 import Render from "./Render.vue";
 import Jsx from "./Jsx.vue";
+import Vuex from "./Vuex.vue";
 export default {
   components: {
     Model,
     Sync,
     Render,
     Jsx,
+    Vuex,
   },
   data() {
     return {

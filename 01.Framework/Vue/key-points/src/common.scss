@@ -4,7 +4,7 @@ body {
   margin: 0;
 }
 p {
-  margin: 0;
+  margin: 8px 0;
 }
 h1, h2, h3, h4, h5, h6 {
   margin: 5px 0;
@@ -27,6 +27,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 .mt-l {
   margin-top: 24px;
+}
+.ml-s {
+  margin-left: 8px;
+}
+.ml-m {
+  margin-left: 16px;
+}
+.ml-l {
+  margin-left: 24px;
+}
+.mr-s {
+  margin-right: 8px;
+}
+.mr-m {
+  margin-right: 16px;
+}
+.mr-l {
+  margin-right: 24px;
 }
 
 .table-header-operations {

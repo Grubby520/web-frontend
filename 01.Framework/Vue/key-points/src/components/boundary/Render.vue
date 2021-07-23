@@ -33,7 +33,7 @@ export default {
       listeners：(2.3.0+) 一个包含了所有父组件为当前组件注册的事件监听器的对象。这是 data.on 的一个别名。
       injections：(2.3.0+) 如果使用了 inject 选项，则该对象包含了应当被注入的 property。
      */
-    console.log(ctx);
+    // console.log(ctx);
     return h(
       "div",
       {

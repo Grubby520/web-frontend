@@ -13,6 +13,7 @@ module.exports = {
     "semi": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-undef": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-unused-vars": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-irregular-whitespace": process.env.NODE_ENV === "production" ? "warn" : "off",
   },
   overrides: [
     {
