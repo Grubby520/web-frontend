@@ -67,7 +67,7 @@
       >
     </p>
 
-    <h4>v-model 更新 state</h4>
+    <h4 class="mt-l">v-model 更新 state</h4>
     <p>
       <el-input v-model="rootState" style="width: 20%"></el-input>
     </p>
@@ -117,7 +117,7 @@ export default {
         return this.$store.state.rootState;
       },
       set(value) {
-        this.$store.commit("rootMutation", value);
+        this.$store.commit("rootMutation", value); // 任何store的修改严格使用 mutation 更新
       },
     },
   },
