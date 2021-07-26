@@ -66,15 +66,20 @@
         >incrementByAsyncPromiseMethod inputVal</el-button
       >
     </p>
+
+    <h4>v-model 更新 state</h4>
+    <p>
+      <el-input v-model="rootState" style="width: 20%"></el-input>
+    </p>
   </div>
 </template>
 
 <script>
-// 使用命名空间函数，就避免使用 store 对象，全部使用 map 辅助函数
+// 使用命名空间函数，就避免直接使用 $store 对象，全部使用 map 辅助函数
 import { createNamespacedHelpers } from "vuex";
 // 组件绑定的辅助函数
 const { mapState, mapGetters, mapActions, mapMutations } =
-  createNamespacedHelpers("rootStore");
+  createNamespacedHelpers("moduleA");
 
 export default {
   name: "Vuex",
@@ -89,7 +94,7 @@ export default {
     // store.state
     count() {
       // state namespaced
-      return this.$store.state.rootStore.count; // 全局的，注入到所有子组件 $store
+      return this.$store.state.moduleA.count; // 全局的，注入到所有子组件 $store
     },
     // 利用辅助函数 + 解构
     ...mapState({
@@ -106,13 +111,22 @@ export default {
     ...mapState(["salary"]),
     // mapGetters 与 mapState 用法一模一样
     ...mapGetters(["doneTodoLength"]),
+    // v-model 更新 state （或者使用自定义事件 :value="rootState" @input="$store.commit("rootMutation", e.target.value)"）
+    rootState: {
+      get() {
+        return this.$store.state.rootState;
+      },
+      set(value) {
+        this.$store.commit("rootMutation", value);
+      },
+    },
   },
   methods: {
     // store.getters
     getTodoById() {
       const id = Math.random() > 0.5 ? 1 : 2;
       // getters namespaced
-      this.checkedTodo = this.$store.getters["rootStore/getTodoById"](id);
+      this.checkedTodo = this.$store.getters["moduleA/getTodoById"](id);
     },
     // Mutations -------------
     // 辅助函数 解构
@@ -120,16 +134,16 @@ export default {
     // 直接使用 store.commit
     incrementMethod() {
       // commit namespaced
-      this.$store.commit("rootStore/increment");
+      this.$store.commit("moduleA/increment");
     },
     incrementByMethod() {
       // store mutation commit 推荐
-      this.$store.commit("rootStore/incrementBy", {
+      this.$store.commit("moduleA/incrementBy", {
         count: this.inputVal,
       });
       // object mode <@required: type 属性> 不推荐
       // this.$store.commit({
-      //   type: "rootStore/incrementBy",
+      //   type: "moduleA/incrementBy",
       //   count: this.inputVal,
       // });
     },
@@ -141,9 +155,9 @@ export default {
     // store.dispatch 分发
     incrementAsyncMethod() {
       // dispatch namespaced
-      this.$store.dispatch("rootStore/incrementAsync");
+      this.$store.dispatch("moduleA/incrementAsync");
       // payload
-      // this.$store.dispatch("rootStore/incrementAsync", payload);
+      // this.$store.dispatch("moduleA/incrementAsync", payload);
       // * object mode - 通用的，无法区分是 dispath 和 commit
       // this.$store({
       //   type: "incrementAsync",
