@@ -121,6 +121,9 @@ export default {
       },
     },
   },
+  mounted() {
+    console.log("Vuex.Store 实例：", this.$store);
+  },
   methods: {
     // store.getters
     getTodoById() {

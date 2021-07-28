@@ -7,7 +7,7 @@ module.exports = {
         "@src": path.resolve(__dirname, "src"),
         "@components": path.resolve(__dirname, "src/components"),
         "@share": path.resolve(__dirname, "src/share"),
-        // vue: 'vue/dist/vue.esm.js'
+        // "vue$": 'vue/dist/vue.esm.js', // 完整版
       },
     },
   },

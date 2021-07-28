@@ -3,7 +3,7 @@
     <div class="flex">
       <div id="nav">
         <ul>
-          <li><router-link to="/">Home</router-link></li>
+          <li><router-link to="/home">Home</router-link></li>
           <li>
             <router-link to="/lifecycle">Lifecycle</router-link>
           </li>
@@ -12,6 +12,9 @@
           </li>
           <li>
             <router-link to="/boundary">Boundary</router-link>
+          </li>
+          <li>
+            <router-link to="/nestRouter">NestRouter</router-link>
           </li>
         </ul>
       </div>

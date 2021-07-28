@@ -1,5 +1,7 @@
 <template>
-  <Index />
+  <div class="boundary-c">
+    <Index />
+  </div>
 </template>
 
 <script>
