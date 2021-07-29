@@ -6,3 +6,6 @@ webpack 如何实现懒加载？
 webpack 常见性能优化
 babel-runtime 和 babel-polyfill 的区别
 
+### 关键点
+1. webpack-chain API 源码;
+

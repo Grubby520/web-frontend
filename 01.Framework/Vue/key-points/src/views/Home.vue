@@ -1,3 +1,6 @@
+<!--  1.会被 webpack vue-template-compiler 模板解析
+      2.其他 loader 如 file-loader, url-loader 等 解析
+-->
 <template>
   <div class="home-c">
     <p>我是主页</p>
@@ -15,6 +18,7 @@ export default {
 };
 </script>
 
+<!-- * 会被 webpack 当做一个 *.scss 文件处理 -->
 <style lang="scss" scoped>
 .home {
   font-size: 16px;

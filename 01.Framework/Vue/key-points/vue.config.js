@@ -1,3 +1,4 @@
+const { configs } = require("eslint-plugin-prettier");
 const path = require("path");
 
 module.exports = {
@@ -11,4 +12,7 @@ module.exports = {
       },
     },
   },
+  // chainWebpack: (config) => {
+  //   config.plugin("stylelint");
+  // },
 };

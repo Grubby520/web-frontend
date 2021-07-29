@@ -24,8 +24,15 @@ export default {
     // better way, 结合 $once 实例方法，监听hook钩子，且只会触发一次
     // source code: 调用 $on(event, on), on内部调用 $off, 并执行回调 fn.apply(vm, arguments)
     this.$once("hook:beforeDestroy", () => {
+      console.log("hook:beforeDestroy");
       EventBus.$off();
     });
+    // source code
+    // function callHook(vm, hook) {
+    //   if (vm._hasHookEvent) {
+    //     vm.$emit("hook:" + hook); // vm 实例只能通过 $on, $once 获取hook函数
+    //   }
+    // }
   },
   methods: {
     btnClick() {
