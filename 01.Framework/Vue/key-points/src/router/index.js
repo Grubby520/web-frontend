@@ -48,6 +48,13 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/unitTest",
+    name: "UnitTest",
+    component: () => import("../views/UnitTest.vue"),
+    // 元数据 用于鉴权，或者设置白名单
+    meta: { auth: true },
+  },
   // 都没有匹配上，则使用默认值
   {
     path: "*",
