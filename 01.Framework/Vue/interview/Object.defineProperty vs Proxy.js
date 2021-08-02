@@ -1,19 +1,73 @@
-// 深入 Vue 响应式原理
-
 /**
- * 面试题
- * 知道Vue响应式数据原理吗？Proxy 与 Object.defineProperty 优劣对比?
+ * 面试题: 
+ * 1.深入 Vue 响应式原理?
+ * 2.知道Vue响应式数据原理吗？Proxy 与 Object.defineProperty 优劣对比?
     Object.defineProperty：
      从这个接口可以看出来，它只能劫持对象的属性。而属性的值可能又是一个对象，这是一个深度遍历的过程。
      数组也可以劫持索引
      问题1.监听不到数组长度的变化（包括 .length, push. pop, shift, unshift, splice等，都会改变数组长苏）；
      问题2.监听数组所有索引的成本太高；
-    
     Proxy:
-    不仅可以代理对象，也可以代理数组，还可以代理动态增加的属性。
+     不仅可以代理对象，也可以代理数组，还可以代理动态增加的属性。
  */
 
 // start ----- //
+// 修改数组的原型，拦截原型链上的方法，arrayMethod 是一个全局唯一的对象，对它做拦截处理
+function def(obj, key, value, enumerable) {
+    Object.defineProperty(obj, key, {
+        configurable: true,
+        enumerable: !!enumerable,
+        writable: true,
+        value
+    })
+}
+
+const arrayProto = Array.prototype
+const arrayMethod = Object.create(arrayProto)
+// 给7个修改length的方法patch打补丁
+const methodsToPatch = [
+    "push",
+    "pop",
+    "shift",
+    "unshift",
+    "splice",
+    "sort",
+    "reverse"
+]
+// intercept mutating methods and emit events
+methodsToPatch.forEach(method => {
+    const original = arrayMethod[method]
+    def(arrayMethod, method, function mutator(...args) {
+        const result = original.apply(this, args) // 入参是数组，与预期的结果能一致?
+        const ob = this.__ob__
+        switch (method) {
+            case "push":
+            case "unshift":
+                inserted = args; // unshift添加进开头的新元素
+                break;
+            case "splice":
+                inserted = args.slice(2); // splice添加进来的新元素
+                break;
+        }
+        if (inserted) ob.observeArray(inserted) // 新插入的元素实现响应式
+        // 触发更新
+        console.log(`array method update: ${method}`)
+        return result
+    })
+})
+
+// 处理之后数组的数据结构:
+// __ob__: Observer {value: Array(1)}
+// [[Prototype]]: Array
+// pop: ƒ mutator(...args)
+// push: ƒ mutator(...args)
+// reverse: ƒ mutator(...args)
+// shift: ƒ mutator(...args)
+// sort: ƒ mutator(...args)
+// splice: ƒ mutator(...args)
+// unshift: ƒ mutator(...args)
+// [[Prototype]]: Array(0)
+
 function defineReactive(obj, key, val) {
     const property = Object.getOwnPropertyDescriptor(obj, key)
     if (property && property.configurable === false) {
@@ -39,7 +93,7 @@ function defineReactive(obj, key, val) {
             if (Array.isArray(value)) {
                 dependArray(value)
             }
-            console.log(`collect dependencies：${key} = ${JSON.stringify(value)} `)
+            // console.log(`collect dependencies：${key} = ${JSON.stringify(value)} `)
             return value
         },
         set(newVal) {
@@ -68,12 +122,30 @@ function defineReactive(obj, key, val) {
 class Observer {
     constructor(value) {
         this.value = value
-        this.walk(value)
+        def(value, "__ob__", this)
+        if (Array.isArray(value)) {
+            // start 数组响应式
+            if ('__proto__' in {}) {
+                // 基础知识 arr.__proto__ === Array.prototype 现代浏览器设计的一个 __proto__ 属性
+                value.__proto__ = arrayMethod // 改写了 value 的原型
+            }
+            this.observeArray(value)
+        } else {
+            // 对象或其他基本类型走这
+            this.walk(value)
+        }
     }
+
     walk(obj) {
         const keys = Object.keys(obj)
         for (let i = 0; i < keys.length; i++) {
             defineReactive(obj, keys[i])
+        }
+    }
+
+    observeArray(items) {
+        for (let i = 0, l = items.length; i < l; i++) {
+            observe(items[i]);
         }
     }
 }
@@ -85,13 +157,24 @@ function observe(value) {
         return
     }
     let ob = null
-    ob = new Observer(value)
+    const hasOwn = (obj, key) => {
+        return Object.prototype.hasOwnProperty.call(obj, key)
+    }
+    const isPlainObject = (obj) => {
+        return Object.prototype.toString.call(obj) === '[object Object]'
+    }
+    // 可能其他更新方式，需要跳过已经attached的属性
+    if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
+        ob = value.__ob__
+    } else if ((Array.isArray(value) || isPlainObject(value)) && Object.isExtensible(value) ) {
+        // 深度遍历，只处理对象和数组
+        ob = new Observer(value)
+    }
     return ob
 }
 
 function dependArray(value) {
     // 收集 watcher ...
-    
 }
 // end ----- //
 
@@ -133,11 +216,11 @@ function dependArray(value) {
 
 
 // 测试-数组 ----- //
-let cArr = {
-    arr: [1, 2, 3]
-}
+// let cArr = {
+//     arr: [1, 2, 3]
+// }
 
-let observer = new Observer(cArr)
+// let observer = new Observer(cArr)
 // // 触发 get
 // cArr.arr
 // // 触发 set
@@ -146,7 +229,7 @@ let observer = new Observer(cArr)
 // cArr.arr[2] = 33
 
 // 数组变化
-cArr.arr
+// cArr.arr
 
 // * 1.改变length，并不会触发 set
 // cArr.arr.length = 2 
@@ -179,3 +262,28 @@ cArr.arr
 
 
 // 拦截数组的方法 ----- //
+cArr = {
+    arr: [{
+        label: 'who',
+        value: 1
+    }],
+    obj: {
+        a: 'a',
+        b: 'b'
+    }
+}
+
+observer = new Observer(cArr)
+
+// 2种方式会失效
+cArr.arr[0] = [1, 2, 3]
+cArr.arr.length = 1
+
+// 正确的操作
+cArr.arr.push([{'aa': 1}])
+
+cArr.arr.unshift({'unshift': 23})
+
+cArr.arr.splice(0, 1)
+
+console.log(observer)

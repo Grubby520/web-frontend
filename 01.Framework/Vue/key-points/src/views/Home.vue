@@ -10,9 +10,24 @@
 <script>
 export default {
   name: "Home",
+  data() {
+    return {
+      arr: [
+        {
+          label: "who",
+          value: 1,
+        },
+      ],
+      obj: {
+        a: "a",
+        b: "b",
+      },
+    };
+  },
   methods: {
     jump() {
-      this.$router.push({ path: "nestRouter/18" });
+      console.log(this);
+      this.$router.push({ path: "nestRouter/18" }); // router 有拦截，会失效！！！
     },
   },
 };
