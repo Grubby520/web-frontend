@@ -7,6 +7,15 @@
      数组也可以劫持索引
      问题1.监听不到数组长度的变化（包括 .length, push. pop, shift, unshift, splice等，都会改变数组长苏）；
      问题2.监听数组所有索引的成本太高；
+
+     数组的处理方式：
+     1.在 new Observer里，深度遍历时，判断属性值是否是数组，走 observeArray方法，对每个值进行 observe；
+     重点：是对象，重写原型 value.__ob__ = arrayMethod（防止全局污染，只对value有效）
+          arrayMethod = Object.create(Array.prototype)
+          对 arrayMethod 上指定的 7 个方法进行 def 拦截操作
+
+     2.如果值是数组或对象，继续 new Observer()
+     
     Proxy:
      不仅可以代理对象，也可以代理数组，还可以代理动态增加的属性。
  */
@@ -276,8 +285,8 @@ cArr = {
 observer = new Observer(cArr)
 
 // 2种方式会失效
-cArr.arr[0] = [1, 2, 3]
-cArr.arr.length = 1
+// cArr.arr[0] = [1, 2, 3]
+// cArr.arr.length = 1
 
 // 正确的操作
 cArr.arr.push([{'aa': 1}])
@@ -285,5 +294,7 @@ cArr.arr.push([{'aa': 1}])
 cArr.arr.unshift({'unshift': 23})
 
 cArr.arr.splice(0, 1)
+
+cArr.arr[0].label = 'who update'
 
 console.log(observer)
