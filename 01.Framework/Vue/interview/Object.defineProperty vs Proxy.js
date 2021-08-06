@@ -9,12 +9,10 @@
      问题2.监听数组所有索引的成本太高；
 
      数组的处理方式：
-     1.在 new Observer里，深度遍历时，判断属性值是否是数组，走 observeArray方法，对每个值进行 observe；
-     重点：是对象，重写原型 value.__ob__ = arrayMethod（防止全局污染，只对value有效）
-          arrayMethod = Object.create(Array.prototype)
-          对 arrayMethod 上指定的 7 个方法进行 def 拦截操作
-
-     2.如果值是数组或对象，继续 new Observer()
+     * defineProperty监听不到数组长度变化的，监听数组所有索引的成本太高
+     * 数组是单独调用observeArray方法-数据描述符，不是defineReactive方法-存储描述符，
+     * 使用defineProperty对Array的7个原型方法进行拦截，把被拦截的数据的原型指向改造后的原型（arrayMethods）
+     * 并没有直接修改Array.prototype(隔离，不污染全局的Array)，而是把arrayMethods赋值给value的__proto__(现代浏览器都有实现),只对data中的属性有效
      
     Proxy:
      不仅可以代理对象，也可以代理数组，还可以代理动态增加的属性。

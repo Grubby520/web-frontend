@@ -72,7 +72,7 @@ const router = new VueRouter({
 // beforeEach
 router.beforeEach((to, from, next) => {
   // console.log("* global from: ", from);
-  console.log("* global beforeEach");
+  // console.log("* global beforeEach");
   // Auth 鉴权问题
   const isAuthenticated = true;
   if (to.name !== "Login" && !isAuthenticated) {
@@ -89,14 +89,14 @@ router.beforeEach((to, from, next) => {
 // beforeResolve
 router.beforeResolve((to, from, next) => {
   // console.log("* global to: ", to);
-  console.log("* global beforeResolve");
+  // console.log("* global beforeResolve");
   next();
 });
 
 // afterEach
 router.afterEach((to, from) => {
   // console.log("* global to: ", to);
-  console.log("* global afterEach");
+  // console.log("* global afterEach");
 });
 
 export default router;
