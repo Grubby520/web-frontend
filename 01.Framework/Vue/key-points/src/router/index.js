@@ -55,6 +55,11 @@ const routes = [
     // 元数据 用于鉴权，或者设置白名单
     meta: { auth: true },
   },
+  {
+    path: "/reactive",
+    name: "Reactive",
+    component: () => import("../views/Reactive.vue")
+  },
   // 都没有匹配上，则使用默认值
   {
     path: "*",

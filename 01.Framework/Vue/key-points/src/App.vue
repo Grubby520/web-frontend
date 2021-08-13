@@ -19,6 +19,9 @@
           <li>
             <router-link to="/unitTest">UnitTest</router-link>
           </li>
+          <li>
+            <router-link to="/reactive">Reactive</router-link>
+          </li>
         </ul>
       </div>
       <div id="container">

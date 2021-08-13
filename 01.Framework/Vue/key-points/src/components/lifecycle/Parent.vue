@@ -105,6 +105,7 @@ export default {
       this.$nextTick(() => {
         // 钩子执行过程： parent beforeUpdate -> child beforeUpate -> child updated -> parent updated
         console.log(this.$refs.child.$el.children.length);
+        console.log(this)
       });
     },
     del(index) {

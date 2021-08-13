@@ -16,7 +16,7 @@
       {{ tab }}
     </button>
 
-    <keep-alive>
+    <keep-alive :exclude="'Archive'">
       <!-- 搭配内置组件 component, 动态组件 -->
       <!-- 特殊的 attribute is -->
       <component v-bind:is="currentTab" class="tab"></component>
@@ -48,5 +48,8 @@ export default {
       tabs: ["Posts", "Archive"],
     };
   },
+  mounted() {
+    console.log('Alive Componet', this)
+  }
 };
 </script>
