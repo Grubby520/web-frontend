@@ -7,3 +7,6 @@
 [submodule "Framework/Vue/vue-next-koa"]
 	path = Framework/Vue/vue-next-koa
 	url = git@github.com:Grubby520/vue-next-koa.git
+[submodule "Framework/Vue/vue-source-code-to-learn"]
+	path = Framework/Vue/vue-source-code-to-learn
+	url = git@github.com:Grubby520/vue-source-code-to-learn.git
