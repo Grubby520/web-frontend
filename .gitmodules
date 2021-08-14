@@ -4,3 +4,6 @@
 [submodule "data-structures-and-algorithm/web-arithmetic"]
 	path = data-structures-and-algorithm/web-arithmetic
 	url = git@github.com:Grubby520/web-arithmetic.git
+[submodule "Framework/Vue/vue-next-koa"]
+	path = Framework/Vue/vue-next-koa
+	url = git@github.com:Grubby520/vue-next-koa.git

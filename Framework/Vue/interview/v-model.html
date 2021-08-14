@@ -1,0 +1,36 @@
+<!-- 
+    纯html实现最简单的v-model双向数据绑定功能
+    主要目的是掌握 Object.defineProperty API
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="input" type="text" @input="handleInput">
+    <script>
+        const dom = document.getElementById('input')
+        const data = {}
+        let temp = undefined
+        Object.defineProperty(data, 'value', {
+            get() {
+                return temp
+            },
+            set(val) {
+                dom.value = val // set 更新view
+                temp = val
+            }
+        })
+        dom.addEventListener('input', (event) => {
+            const val = event.target.value // event 更新model
+            data.value = val
+        })
+
+        data.value = 'checkValue'
+    </script>
+</body>
+</html>

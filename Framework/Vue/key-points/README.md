@@ -1,5 +1,5 @@
 # key-points
-
+本项目主要记录了vue框架重要的技术知识点。
 ## Project setup
 ```
 npm install
