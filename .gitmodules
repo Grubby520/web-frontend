@@ -1,6 +1,3 @@
-[submodule "Framework/React/create-react-demo"]
-	path = Framework/React/create-react-demo
-	url = git@github.com:Grubby520/create-react-demo.git
 [submodule "Data-structures-and-algorithm/web-arithmetic"]
 	path = Data-structures-and-algorithm/web-arithmetic
 	url = git@github.com:Grubby520/web-arithmetic.git
@@ -10,3 +7,6 @@
 [submodule "Framework/Vue/vue-source-code-to-learn"]
 	path = Framework/Vue/vue-source-code-to-learn
 	url = git@github.com:Grubby520/vue-source-code-to-learn.git
+[submodule "Framework/React/create-react-demo"]
+	path = Framework/React/create-react-demo
+	url = git@github.com:Grubby520/create-react-demo.git
