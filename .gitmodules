@@ -1,8 +1,8 @@
-[submodule "01.Framework/React/create-react-demo"]
-	path = 01.Framework/React/create-react-demo
+[submodule "Framework/React/create-react-demo"]
+	path = Framework/React/create-react-demo
 	url = git@github.com:Grubby520/create-react-demo.git
-[submodule "data-structures-and-algorithm/web-arithmetic"]
-	path = data-structures-and-algorithm/web-arithmetic
+[submodule "Data-structures-and-algorithm/web-arithmetic"]
+	path = Data-structures-and-algorithm/web-arithmetic
 	url = git@github.com:Grubby520/web-arithmetic.git
 [submodule "Framework/Vue/vue-next-koa"]
 	path = Framework/Vue/vue-next-koa
