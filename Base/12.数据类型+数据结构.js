@@ -1,6 +1,6 @@
 /**
  基本数据类型
- string, number, boolean, null, undefined, bigInt, Symbol
+ string, number, boolean, null, undefined, bigInt(ES20120), Symbol(ES6)
  
  基本包装类型
  String, Number, Boolean, BigInt, Symbol
@@ -65,6 +65,7 @@ arr = [1, '1', [1, 2], { a: 1 }, [{ b: 1 }]]
 obj = { a: 1 }
 
 // 1. typeof
+// typeof 原理：typeof是一个操作符而不是函数，用来检测给定变量的数据类型
 print(typeof arr) // 'object'
 print(typeof obj) // 'object'
 
@@ -102,6 +103,7 @@ print(getDataType(symbol))
 print(getDataType(arr))
 print(getDataType(obj))
 
+// Object类型的‘子类型’
 date = new Date()
 regexp = new RegExp()
 fn = function() {}

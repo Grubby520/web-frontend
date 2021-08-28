@@ -10,3 +10,12 @@
 [submodule "Framework/React/create-react-demo"]
 	path = Framework/React/create-react-demo
 	url = git@github.com:Grubby520/create-react-demo.git
+[submodule "Framework/Vue/vue3-battle"]
+	path = Framework/Vue/vue3-battle
+	url = git@github.com:Grubby520/vue3-battle.git
+[submodule "Framework/Vue/erp-web"]
+	path = Framework/Vue/erp-web
+	url = ssh://git@code.starlinke.cn:222/erp/erp-web-front-new.git
+[submodule "Framework/Vue/srm-web"]
+	path = Framework/Vue/srm-web
+	url = ssh://git@code.starlinke.cn:222/erp/srm-web.git

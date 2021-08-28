@@ -60,6 +60,7 @@ let { y: y } = { y: 1 };
 let { x: y } = { x: 1 };
 // 定义一个别名 匹配api返回的data属性名，赋值给真正的变量 tableList
 let { data: tableList } = { data: [] };
+const { designCode, patternVersion: version } = {designCode: 1, patternVersion: 2}
 
 // 复杂嵌套
 let response = {

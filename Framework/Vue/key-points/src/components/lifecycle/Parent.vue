@@ -101,10 +101,10 @@ export default {
         label: this.text,
         key: this.key,
       });
-      console.log(this.$refs.child.$el.children.length);
+      console.log('DOM更新之前', this.$refs.child.$el.children.length);
       this.$nextTick(() => {
         // 钩子执行过程： parent beforeUpdate -> child beforeUpate -> child updated -> parent updated
-        console.log(this.$refs.child.$el.children.length);
+        console.log('DOM更新之后', this.$refs.child.$el.children.length);
         console.log(this)
       });
     },

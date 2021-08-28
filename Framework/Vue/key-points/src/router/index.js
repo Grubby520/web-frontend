@@ -60,6 +60,11 @@ const routes = [
     name: "Reactive",
     component: () => import("../views/Reactive.vue")
   },
+  {
+    path: "/elementUi",
+    name: "ElementUi",
+    component: () => import("../views/ElementUi.vue")
+  },
   // 都没有匹配上，则使用默认值
   {
     path: "*",
