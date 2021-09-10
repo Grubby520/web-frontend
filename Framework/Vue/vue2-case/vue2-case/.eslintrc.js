@@ -10,11 +10,6 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "semi": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-undef": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-unused-vars": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-irregular-whitespace": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-side-effects-in-computed-properties": process.env.NODE_ENV === "production" ? "warn" : "off",
   },
   overrides: [
     {

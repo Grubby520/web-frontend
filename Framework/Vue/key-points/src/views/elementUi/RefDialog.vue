@@ -4,11 +4,7 @@
   内部关闭 内部变量 visible 控制
 -->
 <template>
-  <el-dialog
-    title=""
-    :visible.sync="visible"
-    width="600px"
-  >
+  <el-dialog title="" :visible.sync="visible" width="600px">
     <div></div>
     <div slot="footer">
       <el-button @click="close">取 消</el-button>
@@ -19,19 +15,19 @@
 
 <script>
 export default {
-  name: 'RefDialog',
+  name: "RefDialog",
   data() {
     return {
-      visible: false
-    }
+      visible: false,
+    };
   },
   methods: {
     show() {
-      this.visible = true
+      this.visible = true;
     },
     close() {
-      this.visible = false
-    }
-  }
+      this.visible = false;
+    },
+  },
 };
 </script>

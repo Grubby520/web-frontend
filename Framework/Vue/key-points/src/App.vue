@@ -25,6 +25,9 @@
           <li>
             <router-link to="/elementUi">elementUi</router-link>
           </li>
+          <li>
+            <router-link to="/sl-ui">sl-ui</router-link>
+          </li>
         </ul>
       </div>
       <div id="container">

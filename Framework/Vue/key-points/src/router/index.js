@@ -65,6 +65,11 @@ const routes = [
     name: "ElementUi",
     component: () => import("../views/ElementUi.vue")
   },
+  {
+    path: "/sl-ui",
+    name: "SlUi",
+    component: () => import("../views/SlUi.vue")
+  },
   // 都没有匹配上，则使用默认值
   {
     path: "*",
